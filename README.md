@@ -34,7 +34,7 @@ plt.plot([p[0] for p in right_contour], [p[1] for p in right_contour], "k--")
 plt.axis("equal")
 ```
 
-![Output image](imgs/1.svg)
+![Output image](https://github.com/stephtr/variable-polyline-buffer/raw/main/imgs/1.svg)
 
 Replace points and dists with your polyline data and corresponding thicknesses.
 
@@ -45,7 +45,7 @@ points = [(0, 0), (2, 0.5), (3, -0.5), (4, 1)]
 distances = [(0.1, 1), (0.1, 0.5), 0.2]
 ```
 
-![Output image](imgs/2.svg)
+![Output image](https://github.com/stephtr/variable-polyline-buffer/raw/main/imgs/2.svg)
 
 By supplying `False` as distance, one can taper between segments with different widths:
 
@@ -54,7 +54,7 @@ points = [(0, 0), (1, 0), (2, 0), (3, 0)]
 distances = [(0.5, 0), (False, 0), (0.2, 0)]
 ```
 
-![Output image](imgs/3.svg)
+![Output image](https://github.com/stephtr/variable-polyline-buffer/raw/main/imgs/3.svg)
 
 ## Requirements
 
