@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="variable_polyline_buffer",
-    version="0.1.6",
+    version="0.1.7",
     package_dir={"": "src"},
     packages=find_packages(where="src"),
     description="A function for calculating a buffer around a polyline, defining the contours of a line with variable thickness.",

@@ -76,15 +76,16 @@ def generate_polyline_buffer(points, dists):
         i_segment = 1
         i_line = 2
         iteration = 0
+        local_points = points[:]
         while i_segment < len(path) - 2:
             segment = path[i_segment + 1] - path[i_segment]
-            line = points[i_line + 1] - points[i_line]
-            if (
-                segment.dot(line) < 0
-            ):  # if one of the segments is inversed, eliminate it and extend the adjacent ones such that they meet
+            line = local_points[i_line + 1] - local_points[i_line]
+            if segment.dot(line) < 0:
+                # if one of the segments is inversed, eliminate it and extend the adjacent ones such that they meet
                 normal_before = rot_mat @ (path[i_segment] - path[i_segment - 1])
                 normal_after = rot_mat @ (path[i_segment + 2] - path[i_segment + 1])
                 A = np.array([normal_before, normal_after])
+                A_inv = np.linalg.inv(A)
                 b = np.array(
                     [
                         normal_before @ path[i_segment],
@@ -92,15 +93,22 @@ def generate_polyline_buffer(points, dists):
                     ]
                 )
                 path.pop(i_segment + 1)
-                path[i_segment] = np.linalg.inv(A) @ b
-                if (
-                    i_segment > 1
-                ):  # now that we modified the path, we need to check the previous segment again
+                path[i_segment] = A_inv @ b
+                # in addition, we also need to modify the according segment in the original line
+                b = np.array(
+                    [
+                        normal_before @ local_points[i_line],
+                        normal_after @ local_points[i_line + 1],
+                    ]
+                )
+                local_points.pop(i_segment + 1)
+                local_points[i_line] = A_inv @ b
+
+                if i_segment > 1:
+                    # now that we modified the path, we need to check the previous segment again
                     i_segment -= 1
-                else:
-                    i_line += 1
+                    i_line -= 1
                 iteration += 1
-                # if iteration > 1: break
             else:
                 i_segment += 1
                 i_line += 1
